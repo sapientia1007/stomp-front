@@ -1,5 +1,4 @@
 import './App.css';
-import axios from "axios";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import SockJS from 'sockjs-client';
 import { Stomp } from "@stomp/stompjs";
@@ -10,7 +9,8 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [username, setUsername] = useState('');
   const [nicknameEntered, setNicknameEntered] = useState(false);
-  
+  const subscptionId = useRef(null);
+
   const activeEnter = (e) => {
     if (e.key === 'Enter') {
       handleEnter();
@@ -50,7 +50,7 @@ function App() {
   }, []);
 
   // const fetchMessages = useCallback(() => {
-  //   return axios.get("http://localhost:8080/coupong")
+  //   return axios.get("http://localhost:80/coupong")
   //     .then(response => { 
   //       if (Array.isArray(response.data)) {
   //         setMessages(response.data);
@@ -93,12 +93,16 @@ const handleExit = () => {
       message: "",
       createdDate: ""
     };
+    console.log("Sending exit message:", body);
     stompClient.current.send("/pub/exit", {}, JSON.stringify(body), () => {
-      stompClient.current.unsubscribe();
+      if (subscptionId.current) {
+        stompClient.current.unsubscribe(subscptionId.current);
+      }
       disconnect();
-    }); 
+    });
   }
 };
+
   useEffect(() => {
     connect();
     // fetchMessages();
@@ -109,7 +113,7 @@ const handleExit = () => {
       window.removeEventListener('beforeunload', handleExit); 
       disconnect();
     };
-  }, [connect /*, fetchMessages*/]);
+  }, [connect]);
 
   const sendMessage = () => {
     if (stompClient.current && inputValue && username) {
