@@ -32,7 +32,7 @@ function App() {
   };
 
   const connect = useCallback(() => {
-    const socket = new SockJS("/proxy/coupong");
+    const socket = new SockJS("/api/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
