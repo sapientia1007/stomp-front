@@ -32,7 +32,7 @@ function App() {
   };
 
   const connect = useCallback(() => {
-    const socket = new SockJS("http://localhost:8080/coupong");
+    const socket = new SockJS("/proxy/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
@@ -49,20 +49,20 @@ function App() {
     });
   }, []);
 
-  const fetchMessages = useCallback(() => {
-    return axios.get("http://localhost:8080/coupong")
-      .then(response => { 
-        if (Array.isArray(response.data)) {
-          setMessages(response.data);
-        } else {
-          setMessages([]);
-          console.error(response.data);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+  // const fetchMessages = useCallback(() => {
+  //   return axios.get("http://localhost:8080/coupong")
+  //     .then(response => { 
+  //       if (Array.isArray(response.data)) {
+  //         setMessages(response.data);
+  //       } else {
+  //         setMessages([]);
+  //         console.error(response.data);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
 
   const handleEnter = () => {
@@ -101,7 +101,7 @@ const handleExit = () => {
 };
   useEffect(() => {
     connect();
-    fetchMessages();
+    // fetchMessages();
 
     window.addEventListener('beforeunload', handleExit);
 
@@ -109,7 +109,7 @@ const handleExit = () => {
       window.removeEventListener('beforeunload', handleExit); 
       disconnect();
     };
-  }, [connect, fetchMessages]);
+  }, [connect /*, fetchMessages*/]);
 
   const sendMessage = () => {
     if (stompClient.current && inputValue && username) {
