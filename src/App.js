@@ -109,7 +109,7 @@ const handleExit = () => {
       window.removeEventListener('beforeunload', handleExit); 
       disconnect();
     };
-  }, [connect, fetchMessages]);
+  }, [connect, fetchMessages, handleExit]);
 
   const sendMessage = () => {
     if (stompClient.current && inputValue && username) {
