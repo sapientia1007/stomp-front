@@ -33,9 +33,9 @@ function App() {
   };
 
   const connect = useCallback(() => {
-    const socket = new SockJS("api/coupong", null, { transports: ['websocket'] });
-    // const socket = new SockJS("http://3.36.109.146:8080/coupong", null, { transports: ['websocket'] });
-    // const socket = new SockJS("http://localhost:8080/coupong", null, { transports: ['websocket'] });
+    const socket = new SockJS("api/coupong");
+    // const socket = new SockJS("http://3.36.109.146:8080/coupong");
+    // const socket = new SockJS("http://localhost:8080/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
