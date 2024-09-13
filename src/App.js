@@ -35,7 +35,7 @@ function App() {
   const connect = useCallback(() => {
     const socket = new SockJS("api/coupong");
     // const socket = new SockJS("http://3.36.109.146:8080/coupong");
-    // const socket = new SockJS("http://localhost:80/coupong");
+    // const socket = new SockJS("http://localhost:8080/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
@@ -157,9 +157,9 @@ const handleExit = () => {
             <button onClick={sendMessage}>입력</button>
           </div>
           <div className="chat-messages">
-            {messages.map((item) => (
+            {messages.map((item, index) => (
               <div
-                key={item.id}
+                key={index}
                 className={`chat-message ${item.name === username ? 'my-message' : 'other-message'}`}
               >
                 <div className="message-content">
