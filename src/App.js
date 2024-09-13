@@ -10,7 +10,8 @@ function App() {
   const [username, setUsername] = useState('');
   const [nicknameEntered, setNicknameEntered] = useState(false);
   const subscptionId = useRef(null);
-
+  const [isConnected, setIsConnected] = useState(false);
+  
   const activeEnter = (e) => {
     if (e.key === 'Enter') {
       handleEnter();
@@ -32,11 +33,13 @@ function App() {
   };
 
   const connect = useCallback(() => {
-    const socket = new SockJS("/api/coupong");
+    // const socket = new SockJS("/api/coupong");
+    const socket = new SockJS("http://localhost:80/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
       console.log('Connected: ' + frame);
+      setIsConnected(true);
 
       stompClient.current.subscribe("/sub/coupong", (message) => {
         const newMessage = JSON.parse(message.body);
@@ -66,7 +69,7 @@ function App() {
 
 
   const handleEnter = () => {
-    if (stompClient.current && username) {
+    if (stompClient.current && username && isConnected) {
       const body = {
         name: username,
         message: "",
@@ -87,7 +90,7 @@ const disconnect = () => {
 
 // 사용자 나감 처리 -> 새로고침 포함
 const handleExit = () => {
-  if (stompClient.current && username) { 
+  if (stompClient.current && username && isConnected) { 
     const body = {
       name: username,
       message: "",
@@ -116,7 +119,7 @@ const handleExit = () => {
   }, [connect]);
 
   const sendMessage = () => {
-    if (stompClient.current && inputValue && username) {
+    if (stompClient.current && inputValue && username && isConnected) {
       const body = {
         name: username,
         message: inputValue,
