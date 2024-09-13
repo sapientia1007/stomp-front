@@ -33,8 +33,8 @@ function App() {
   };
 
   const connect = useCallback(() => {
-    // const socket = new SockJS("/api/coupong");
-    const socket = new SockJS("http://localhost:80/coupong");
+    const socket = new SockJS("/api/coupong");
+    // const socket = new SockJS("http://localhost:80/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
