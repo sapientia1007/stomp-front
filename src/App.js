@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from "@stomp/stompjs";
 import { TbMessageChatbot } from "react-icons/tb";
+import { RiSendPlane2Fill } from "react-icons/ri";
 
 // npm install react-icons --save // 아이콘 설치 필요 
 
@@ -171,7 +172,7 @@ function App() {
                   onChange={handleInputChange}
                   onKeyDown={(e) => activeSend(e)}
                 />
-                <button onClick={sendMessage}>입력</button>
+                <button onClick={sendMessage}><RiSendPlane2Fill /></button>
               </div>
               <div className="chat-input-footer">
                 <span>글자 수: {inputCnt}/{max_length}</span>
