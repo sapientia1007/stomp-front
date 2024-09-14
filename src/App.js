@@ -65,6 +65,20 @@ function App() {
     }, (error) => {
       console.error("STOMP connection error:", error);
     });
+
+
+    // 퇴장
+    const handleExit = () => {
+        const body = {
+          name: username,
+          message: "",
+          createdDate: ""
+        };
+        console.log("Sending exit message:", body);
+        stompClient.current.send("/pub/exit", {}, JSON.stringify(body), () => {
+          disconnect();
+        });
+    };
     
     window.addEventListener('beforeunload', handleExit);
 
@@ -90,20 +104,6 @@ function App() {
     if (stompClient.current) {
       stompClient.current.disconnect(() => {
         console.log("Disconnected");
-      });
-    }
-  };
-
-  const handleExit = () => {
-    if (stompClient.current && username ) { 
-      const body = {
-        name: username,
-        message: "",
-        createdDate: ""
-      };
-      console.log("Sending exit message:", body);
-      stompClient.current.send("/pub/exit", {}, JSON.stringify(body), () => {
-        disconnect();
       });
     }
   };
