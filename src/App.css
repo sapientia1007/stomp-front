@@ -36,18 +36,50 @@
     transform: rotate(360deg);
   }
 }
+
 .chat-container {
-  max-width: 600px;
-  margin: 0 auto;
+  margin: auto auto;
   padding: 20px;
+  padding-top: 60px; 
   background-color: #f0f0f0;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+  position: relative; 
+}
+
+.nickname-container {
+  margin-top: 100px;
+
+}
+
+.chat-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  margin-top: 70px;
+  margin-bottom: 70px; 
+}
+
+.chat-input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #f0f0f0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .chat-input {
   display: flex;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
 .chat-input input {
@@ -67,41 +99,54 @@
   cursor: pointer;
 }
 
+
 .chat-input button:hover {
   background-color: #0056b3;
 }
 
-.chat-messages {
+.chat-input-footer {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: flex-end;
+}
+
+.chat-input-footer span {
+  margin-left: 10px;
 }
 
 .chat-message {
   display: flex;
-  max-width: 70%;
+  justify-content: space-between;
+  align-items: flex-end;
   border-radius: 16px;
   padding: 10px;
-  position: relative;
+  box-sizing: border-box;
+  max-width: calc(100% - 20px); 
+  word-break: break-word;
 }
 
 .my-message {
-  align-self: flex-end;
-  background-color: #007bff;
-  color: white;
+  /* align-self: flex-end; */
+  background-color: #c2e0ff;
+  color: rgb(0, 0, 0);
   border-bottom-right-radius: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
+
 .other-message {
-  align-self: flex-start;
-  background-color: #e5e5ea;
+  /* align-self: flex-start; */
+  background-color: #ffffff;
   color: black;
   border-bottom-left-radius: 0;
+  margin-left: 0; 
+  margin-right: 0; 
 }
 
 .message-content {
   display: flex;
   flex-direction: column;
+  flex-grow: 1; 
 }
 
 .message-name {
@@ -116,6 +161,26 @@
 
 .message-time {
   font-size: 0.8rem;
-  color: white;
+  color: rgb(0, 0, 0);
   align-self: flex-end;
+  margin-left: 10px;
+  white-space: nowrap;
 }
+
+.chat-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #c1c1c1c9;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; 
+  border-radius: 10px;
+  font-family: 'HakgyoansimDunggeunmisoTTF-B';
+}
+
+/* .setFont {
+  
+} */
