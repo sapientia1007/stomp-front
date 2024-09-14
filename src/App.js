@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from "@stomp/stompjs";
 import { TbMessageChatbot } from "react-icons/tb";
@@ -12,8 +12,8 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [username, setUsername] = useState('');
   const [nicknameEntered, setNicknameEntered] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [inputCnt, setInputCnt] = useState(0);
+  const [userCnt, setUserCnt] = useState(0);
 
   const messagesEndRef = useRef(null);
   const max_length = 200;
@@ -42,29 +42,40 @@ function App() {
     setUsername(event.target.value);
   };
 
-  const connect = useCallback(() => {
+  useEffect(() => {
     // const socket = new SockJS("api/coupong");
-      // const socket = new SockJS("http://3.36.109.146:8080/coupong");
+    // const socket = new SockJS("http://3.36.109.146:8080/coupong");
     const socket = new SockJS("http://localhost:8080/coupong");
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, (frame) => {
       console.log('Connected: ' + frame);
-      setIsConnected(true);
 
       stompClient.current.subscribe("/sub/coupong", (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         console.log(message.body);
       });
+
+      // 사용자 수 
+      stompClient.current.subscribe("/sub/usercnt", (messageCount) => {
+        const count = parseInt(messageCount.body);
+        setUserCnt(count);
+      })
     }, (error) => {
       console.error("STOMP connection error:", error);
-      setTimeout(connect, 1000);
     });
+    
+    window.addEventListener('beforeunload', handleExit);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleExit); 
+      disconnect();
+    };
   }, []);
 
   const handleEnter = () => {
-    if (stompClient.current && username && isConnected) {
+    if (stompClient.current && username) {
       const body = {
         name: username,
         message: "",
@@ -84,7 +95,7 @@ function App() {
   };
 
   const handleExit = () => {
-    if (stompClient.current && username && isConnected) { 
+    if (stompClient.current && username ) { 
       const body = {
         name: username,
         message: "",
@@ -97,18 +108,8 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    connect();
-    window.addEventListener('beforeunload', handleExit);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleExit); 
-      disconnect();
-    };
-  }, [connect]);
-
   const sendMessage = () => {
-    if (stompClient.current && inputValue && username && isConnected) {
+    if (stompClient.current && inputValue && username) {
       const body = {
         name: username,
         message: inputValue,
@@ -126,7 +127,11 @@ function App() {
 
   return (
     <div>
-      <div className="chat-header"><h1>Coupong Chat <TbMessageChatbot /></h1></div>
+      <div className="chat-header">
+        <h1>Coupong Chat <TbMessageChatbot /></h1>
+        { nicknameEntered && <div className='user-count'> 현재 참여자 수 : {userCnt}</div>}
+        
+      </div>
       <div className="chat-container">
         {!nicknameEntered && (
           <div className="nickname-container">
