@@ -21,12 +21,14 @@ function App() {
 
   const activeEnter = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleEnter();
     }
   }
 
   const activeSend = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       sendMessage();
     }
   }
@@ -71,7 +73,7 @@ function App() {
     // 퇴장
     const handleExit = () => {
         const body = {
-          name: username,
+          name: "",
           message: "",
           createdDate: ""
         };
@@ -130,7 +132,7 @@ function App() {
     <div>
       <div className="chat-header">
         <h1>Coupong Chat <TbMessageChatbot /></h1>
-        { nicknameEntered && <div className='user-count'> 현재 참여자 수 : {userCnt}</div>}
+        { nicknameEntered && <div className='user-count'> {userCnt}명의 참여자</div>}
         
       </div>
       <div className="chat-container">
@@ -152,7 +154,8 @@ function App() {
               {messages.map((item, index) => (
                 <div
                   key={index}
-                  className={`chat-message ${item.name === username ? 'my-message' : 'other-message'}`}
+                  className={`chat-message ${item.name === username ? 'my-message' : 
+                                            item.name === '알림' ? 'notify-message' : 'other-message'}`}
                 >
                   <div className="message-content">
                     <span className="message-name">{item.name}</span>
@@ -175,7 +178,7 @@ function App() {
                 <button onClick={sendMessage}><RiSendPlane2Fill /></button>
               </div>
               <div className="chat-input-footer">
-                <span>글자 수: {inputCnt}/{max_length}</span>
+                <span className='message-length'>글자 수: {inputCnt}/{max_length}</span>
               </div>
             </div>
           </>

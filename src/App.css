@@ -143,6 +143,14 @@
   margin-right: 0; 
 }
 
+.notify-message {
+  background-color: #ffffff00;
+  color: rgb(0, 0, 0);
+  margin-left: 0; 
+  margin-right: 0; 
+  border: 1px solid rgb(0, 0, 0); 
+}
+
 .message-content {
   display: flex;
   flex-direction: column;
@@ -187,4 +195,8 @@
   right: 10px; 
   font-size: 0.8rem; 
   color: #333; 
+}
+
+.message-length {
+  font-family: 'HakgyoansimDunggeunmisoTTF-B';
 }
