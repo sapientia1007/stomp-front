@@ -20,17 +20,19 @@ function App() {
   const max_length = 200;
 
   const activeEnter = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleEnter();
-    }
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) handleEnter(); 
+    // if (e.key === 'Enter') {
+    //   e.preventDefault();
+    //   handleEnter();
+    // }
   }
 
   const activeSend = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) sendMessage(); 
+    // if (e.key === 'Enter') {
+    //   e.preventDefault();
+    //   sendMessage();
+    // }
   }
 
   const handleInputChange = (event) => {
